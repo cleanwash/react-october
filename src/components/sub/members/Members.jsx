@@ -1,9 +1,10 @@
+import Layout from '../../common/layout/Layout';
 import './Members.scss';
 
 export default function Members() {
 	return (
-		<>
-			<h1>Members</h1>
-		</>
+		<Layout title={'Members'}>
+			<p>Members</p>
+		</Layout>
 	);
 }

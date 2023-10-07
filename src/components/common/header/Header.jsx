@@ -5,7 +5,7 @@ export default function Header() {
 	return (
 		<header>
 			<h1>
-				<Link to='/'>Electric</Link>
+				<Link to='/'>Kick Back</Link>
 			</h1>
 			<ul>
 				<li>
