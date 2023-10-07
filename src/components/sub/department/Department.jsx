@@ -1,16 +1,22 @@
 import Layout from '../../common/layout/Layout';
+import { useState } from 'react';
 
 export default function Department() {
+	//console.log('re-render');
+	//let num =0;
+	//리액트 컴포넌트는 무조건 state에 담겨있는 값만 변화점을 인지해서 component를 재호출 하면서, 화면 갱신
+	// useState는 2개의 값이 담겨있는 배열을 반환
+	// 첫번째값은 인수에 전달된 값을 초기값으로 활용한 State값
+	// 두번째값은 해당 State를 변경할 수 있는 State 변경 전용함수
+	// const [state값, state변경함수] =useState(초기값)
+	const [Num, setNum] = useState(0);
+	//console.log(Num);
+	//console.log(setNum);
 	return (
 		<Layout title={'Department'}>
-			<p>Department</p>
-			{/* <ul>
-				<li>list1</li>
-				<li>list2</li>
-				<li>list3</li>
-				<li>list4</li>
-				<li>list5</li>
-			</ul> */}
+			<button onClick={() => setNum(Num - 1)}>minus</button>
+			<button onClick={() => setNum(Num + 1)}>plus</button>
+			<h2>{Num}</h2>
 		</Layout>
 	);
 }
