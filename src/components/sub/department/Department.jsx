@@ -8,16 +8,28 @@ export default function Department() {
 	// 바뀐 state값은 다음번 렌더링 사이클에서 변경된 값이 적용됨
 	//화면의 정보값을 갱신해야 되는 중요한 변경사항이 아닌 요소를 state로 변경하면, 계속해서 컴포넌트가 재랜더링 되므로 비효율적
 	//대표적인 사례: 단순 모션처리 위한 state 적용
-	const rotate = useRef(0);
 	let [Num, setNum] = useState(0);
-	let minus = () => {
-		setNum(--Num);
-		console.log(rotate);
-	};
+	const rotate = useRef(0);
+	//가상돔 요소를 핸들러안쪽에서 호출하고 싶을때는 document.querySelector가 아닌
+	//useRef를 통한 참조객체에 담아서 호출
+	const box = useRef(null);
+	console.log(box);
+
 	let plus = () => {
-		setNum(++Num);
-		console.log(rotate);
+		//setNum(++Num);
+		++rotate.current;
+		console.log('useRef', rotate);
+		console.log('State', Num);
+		console.log(box);
 	};
+
+	let minus = () => {
+		//setNum(--Num);
+		--rotate.current;
+		console.log('useRef', rotate);
+		console.log('State', Num);
+	};
+
 	//앞으로 넣어야 해당 state값이 바로 렌더링이 된다. 리액트에서는 전이증감연산자로 코드를 작성해야 된다.
 	return (
 		<Layout title={'Department'}>
@@ -25,7 +37,7 @@ export default function Department() {
 			{/* <button onClick={() => setNum(Num + 1)}>plus</button> */}
 			<button onClick={plus}>right</button>
 
-			<article style={{ transform: `rotate(${45 * Num}deg)` }}></article>
+			<article ref={box}></article>
 		</Layout>
 	);
 }

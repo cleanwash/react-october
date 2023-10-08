@@ -6,7 +6,7 @@ export default function Layout({ children, title }) {
 	//배열.join(구분자) : 배열을 구분자로 연결해서 하나의 문자로 반환
 	//newClass = newClass.;
 	//newClass = newClass.join('_');
-	console.log('newClass는', newClass);
+	//console.log('newClass는', newClass);
 	//console.log('props는', props);
 	//자식 컴포넌트에서 props.children
 	//해당 컴포넌트에서 wrapping 되고 있는 자식요소가 전달
