@@ -1,22 +1,23 @@
 import Layout from '../../common/layout/Layout';
 import { useState } from 'react';
+import './Department.scss';
 
 export default function Department() {
-	//console.log('re-render');
-	//let num =0;
-	//리액트 컴포넌트는 무조건 state에 담겨있는 값만 변화점을 인지해서 component를 재호출 하면서, 화면 갱신
-	// useState는 2개의 값이 담겨있는 배열을 반환
-	// 첫번째값은 인수에 전달된 값을 초기값으로 활용한 State값
-	// 두번째값은 해당 State를 변경할 수 있는 State 변경 전용함수
-	// const [state값, state변경함수] =useState(초기값)
-	const [Num, setNum] = useState(0);
-	//console.log(Num);
-	//console.log(setNum);
+	console.log('re-render');
+	// 리액트에 state 변경이 일어나면, 컴포넌트는 재랜더링됨
+	// 바뀐 state값은 다음번 렌더링 사이클에서 변경된 값이 적용됨
+	let [Num, setNum] = useState(0);
+	let minus = () => setNum(--Num);
+	let plus = () => setNum(++Num);
+	console.log(Num);
+	//앞으로 넣어야 해당 state값이 바로 렌더링이 된다. 리액트에서는 전이증감연산자로 코드를 작성해야 된다.
 	return (
 		<Layout title={'Department'}>
-			<button onClick={() => setNum(Num - 1)}>minus</button>
-			<button onClick={() => setNum(Num + 1)}>plus</button>
-			<h2>{Num}</h2>
+			<button onClick={minus}>left</button>
+			{/* <button onClick={() => setNum(Num + 1)}>plus</button> */}
+			<button onClick={plus}>right</button>
+
+			<article style={{ transform: `rotate(${45 * Num}deg)` }}></article>
 		</Layout>
 	);
 }
