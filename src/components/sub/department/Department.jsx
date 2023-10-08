@@ -12,22 +12,18 @@ export default function Department() {
 	const rotate = useRef(0);
 	//가상돔 요소를 핸들러안쪽에서 호출하고 싶을때는 document.querySelector가 아닌
 	//useRef를 통한 참조객체에 담아서 호출
-	const box = useRef(null);
-	console.log(box);
+
+	//document.queryselector로 리액트에서 돔 요소를 선택하면 안되는 이유
+	const box = useRef(null); //변수에 꼭 담아주는 것이 좋다.
 
 	let plus = () => {
-		//setNum(++Num);
 		++rotate.current;
-		console.log('useRef', rotate);
-		console.log('State', Num);
-		console.log(box);
+		box.current.style.transform = `rotate(${45 * rotate.current}deg)`;
 	};
 
 	let minus = () => {
-		//setNum(--Num);
 		--rotate.current;
-		console.log('useRef', rotate);
-		console.log('State', Num);
+		box.current.style.transform = `rotate(${45 * rotate.current}deg)`;
 	};
 
 	//앞으로 넣어야 해당 state값이 바로 렌더링이 된다. 리액트에서는 전이증감연산자로 코드를 작성해야 된다.
