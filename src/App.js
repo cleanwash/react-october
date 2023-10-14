@@ -8,6 +8,7 @@ import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 import './styles/Global.scss';
 import { Route } from 'react-router-dom';
+import Detail from './components/sub/youtube/Detail';
 
 function App() {
 	return (
@@ -20,7 +21,7 @@ function App() {
 			<Route path='/youtube' component={Youtube} />
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
-
+			<Route path='/detail' component={Detail}></Route>
 			<Footer />
 		</>
 	);
