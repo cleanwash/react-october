@@ -13,6 +13,7 @@ import './Department.scss';
 
 const path = process.env.PUBLIC_URL;
 export default function Department() {
+	const [Title, setTitle] = useState('');
 	const [Department, setDepartment] = useState([]);
 	console.log('Department', Department); //빈 배열로 출력이 된다.
 	//data fetching
@@ -20,21 +21,34 @@ export default function Department() {
 		fetch(`${path}/DB/department.json`)
 			.then((data) => data.json())
 			.then((json) => {
-				//console.log(json.members);
-				setDepartment(json.members);
+				console.log(json);
+				setTitle(Object.keys(json)[0]);
+				setDepartment(Object.values(json)[0]);
 			});
 	}, []);
 
 	return (
 		<Layout title={'Department'}>
+			<section id='historyBox'>
+				<h2>History</h2>
+				<article>
+					<h3>2016</h3>
+					<ul>
+						<li>This company was established.</li>
+						<li>Launch First Prototype Project</li>
+					</ul>
+				</article>
+			</section>
+
 			<section id='memberBox'>
+				<h2>{Title.charAt(0).toUpperCase() + Title.slice(1)}</h2>
 				{Department.map((member, idx) => {
 					return (
 						<article key={idx}>
 							<div className='pic'>
 								<img src={`${path}/img/${member.pic}`} alt={member.name} />
 							</div>
-							<h2>{member.name}</h2>
+							<h3>{member.name}</h3>
 							<p>{member.position}</p>
 						</article>
 					);
