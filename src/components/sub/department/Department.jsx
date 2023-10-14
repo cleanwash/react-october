@@ -4,19 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { useFetch } from '../../../hooks/useFetch';
 
 const path = process.env.PUBLIC_URL;
-
 export default function Department() {
 	const [Title, setTitle] = useState('');
 	const [Department, setDepartment] = useState([]);
 	const [History, setHistory] = useState([]);
 	const fetchData = useFetch();
 	console.log(History);
-
 	useEffect(() => {
 		fetchData(`${path}/DB/history.json`, setHistory);
 		fetchData(`${path}/DB/department.json`, setDepartment, setTitle);
 	}, []);
-
 	return (
 		<Layout title={'Department'}>
 			<section id='historyBox'>
@@ -39,17 +36,19 @@ export default function Department() {
 
 			<section id='memberBox'>
 				<h2>{Title.charAt(0).toUpperCase() + Title.slice(1)}</h2>
-				{Department.map((member, idx) => {
-					return (
-						<article key={idx}>
-							<div className='pic'>
-								<img src={`${path}/img/${member.pic}`} alt={member.name} />
-							</div>
-							<h3>{member.name}</h3>
-							<p>{member.position}</p>
-						</article>
-					);
-				})}
+				<div className='con'>
+					{Department.map((member, idx) => {
+						return (
+							<article key={idx}>
+								<div className='pic'>
+									<img src={`${path}/img/${member.pic}`} alt={member.name} />
+								</div>
+								<h3>{member.name}</h3>
+								<p>{member.position}</p>
+							</article>
+						);
+					})}
+				</div>
 			</section>
 		</Layout>
 	);
