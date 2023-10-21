@@ -1,6 +1,7 @@
 import Layout from '../../common/layout/Layout';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import './Youtube.scss';
 
 export default function Youtube() {
 	const [Vids, setVids] = useState([]);
@@ -8,9 +9,8 @@ export default function Youtube() {
 	const fetchYoutube = async () => {
 		const api_key = process.env.REACT_APP_YOUTUBE_KEY;
 		const pid = process.env.REACT_APP_PLAYLIST;
-		const num = 10; //10개 추가해서
+		const num = 10;
 		const baseURL = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
-		//fetchData(baseURL, setVids);
 		const data = await fetch(baseURL);
 		const json = await data.json();
 		setVids(json.items);
@@ -30,9 +30,15 @@ export default function Youtube() {
 				return (
 					<article key={idx}>
 						<h2>{title}</h2>
-						<p>{desc.length > 200 ? desc.substr(0, 200) + '...' : desc}</p>
-						<span>{date.split('_').join('.')}</span>
-						<em>{time.split('Z')[0]}</em>
+
+						<div className='txt'>
+							<p>{desc.length > 200 ? desc.substr(0, 200) + '...' : desc}</p>
+							<div className='info'>
+								<span>{date.split('-').join('.')}</span>
+								<em>{time.split('Z')[0]}</em>
+							</div>
+						</div>
+
 						<div className='pic'>
 							<Link to={`/detail/${data.id}`}>
 								<img src={data.snippet.thumbnails.standard.url} alt={data.snippet.title} />
