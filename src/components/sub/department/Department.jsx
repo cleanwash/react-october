@@ -1,18 +1,29 @@
 import './Department.scss';
 import Layout from '../../common/layout/Layout';
 import React, { useEffect, useState } from 'react';
-import { useFetch } from '../../../hooks/useFetch';
 
 const path = process.env.PUBLIC_URL;
 export default function Department() {
 	const [Title, setTitle] = useState('');
 	const [Department, setDepartment] = useState([]);
 	const [History, setHistory] = useState([]);
-	const fetchData = useFetch();
 	console.log(History);
+
+	const fetchDepartment = async () => {
+		const data = await fetch(`${path}/DB/history.json`);
+		const json = await data.json();
+		setHistory(json.history);
+	};
+
+	const fetchHistory = async () => {
+		const data = await fetch(`${path}/DB/department.json`);
+		const json = await data.json();
+		setDepartment(json.members);
+	};
+
 	useEffect(() => {
-		fetchData(`${path}/DB/history.json`, setHistory);
-		fetchData(`${path}/DB/department.json`, setDepartment, setTitle);
+		fetchDepartment();
+		fetchHistory();
 	}, []);
 	return (
 		<Layout title={'Department'}>
@@ -35,7 +46,7 @@ export default function Department() {
 			</section>
 
 			<section id='memberBox'>
-				<h2>{Title.charAt(0).toUpperCase() + Title.slice(1)}</h2>
+				<h2>Department</h2>
 				<div className='con'>
 					{Department.map((member, idx) => {
 						return (
