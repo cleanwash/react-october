@@ -9,10 +9,11 @@ import Youtube from './components/sub/youtube/Youtube';
 import './styles/Global.scss';
 import { Route } from 'react-router-dom';
 import Detail from './components/sub/youtube/Detail';
+import { useMedia } from './hooks/useMedia';
 
 function App() {
 	return (
-		<>
+		<main className={useMedia()}>
 			<Header />
 
 			<Route exact path='/' component={Visual} />
@@ -23,7 +24,7 @@ function App() {
 			<Route path='/contact' component={Contact} />
 			<Route path='/detail' component={Detail}></Route>
 			<Footer />
-		</>
+		</main>
 	);
 }
 
