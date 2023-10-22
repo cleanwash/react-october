@@ -21,7 +21,7 @@ export default function Gallery() {
 		let url = '';
 		const url_interest = `${baseURL}&api_key=${key}&method=${method_interest}&per_page=${num}`;
 		const url_user = `${baseURL}&api_key=${key}&method=${method_user}&per_page=${num}&user_id=${opt.id}`;
-		const url_search = `${baseURL}&api_key=${key}&method=${method_search}&per_page=${num}&tags=${opt.keyword}`;
+		const url_search = `${baseURL}&api_key=${key}&method=${method_search}&per_page=${num}&tags=${opt.keyword}&safe_search=1`;
 
 		opt.type === 'user' && (url = url_user);
 		opt.type === 'interest' && (url = url_interest);
@@ -65,7 +65,7 @@ export default function Gallery() {
 
 	useEffect(() => {
 		//fetchFlickr({ type: 'user', id: myID });
-		fetchFlickr({ type: 'search', keyword: 'japan' });
+		fetchFlickr({ type: 'search', keyword: '음악' });
 	}, []);
 
 	return (
