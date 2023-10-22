@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function Gallery() {
 	const [Pics, setPics] = useState([]);
+	const [IsUser, setIsUser] = useState(true);
 	const refElBtnSet = useRef(null);
 	const myID = '199378814@N03';
 
@@ -35,17 +36,20 @@ export default function Gallery() {
 
 	const handleClickInterest = (e) => {
 		if (e.target.classList.contains('on')) return;
+		setIsUser(false);
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 
 	const handleClickMine = (e) => {
-		if (e.target.classList.contains('on')) return;
+		if (e.target.classList.contains('on') || IsUser) return;
+		setIsUser(true);
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID });
 	};
 
 	const handleClickUser = (e) => {
+		if (IsUser) return;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
