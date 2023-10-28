@@ -2,6 +2,7 @@ import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 import Masonry from 'react-masonry-component';
 import { useState, useEffect, useRef } from 'react';
+import { LuSearch } from 'react-icons/lu';
 
 export default function Gallery() {
 	const myID = '199378814@N03';
@@ -65,7 +66,7 @@ export default function Gallery() {
 
 	useEffect(() => {
 		//fetchFlickr({ type: 'user', id: myID });
-		fetchFlickr({ type: 'search', keyword: '음악' });
+		fetchFlickr({ type: 'search', keyword: 'Canada' });
 	}, []);
 
 	return (
@@ -77,6 +78,12 @@ export default function Gallery() {
 						My Gallery
 					</button>
 				</nav>
+
+				<form>
+					<input type='text' placeholder='Search' />
+					<LuSearch className='btnSearch' fontSize={20} color={'#bbb'} />
+					<button></button>
+				</form>
 			</article>
 
 			<div className='frame'>
