@@ -5,11 +5,11 @@ import { useState, useEffect, useRef } from 'react';
 import { LuSearch } from 'react-icons/lu';
 
 export default function Gallery() {
-	const myID = '199378814@N03';
+	const myID = '197119297@N02';
 	const [Pics, setPics] = useState([]);
-	//IsUser초기값을 내아이디 문자값으로 등록
 	let [IsUser, setIsUser] = useState(myID);
 	const refElBtnSet = useRef(null);
+	const refElInput = useRef(null);
 
 	const fetchFlickr = async (opt) => {
 		console.log('fetching again...');
@@ -22,7 +22,7 @@ export default function Gallery() {
 		let url = '';
 		const url_interest = `${baseURL}&api_key=${key}&method=${method_interest}&per_page=${num}`;
 		const url_user = `${baseURL}&api_key=${key}&method=${method_user}&per_page=${num}&user_id=${opt.id}`;
-		const url_search = `${baseURL}&api_key=${key}&method=${method_search}&per_page=${num}&tags=${opt.keyword}&safe_search=1`;
+		const url_search = `${baseURL}&api_key=${key}&method=${method_search}&per_page=${num}&tags=${opt.keyword}`;
 
 		opt.type === 'user' && (url = url_user);
 		opt.type === 'interest' && (url = url_interest);
@@ -30,6 +30,7 @@ export default function Gallery() {
 
 		const data = await fetch(url);
 		const json = await data.json();
+		if (json.photos.photo.length === 0) return alert('해당 검색어의 결과값이 없습니다.');
 		setPics(json.photos.photo);
 	};
 
@@ -64,9 +65,19 @@ export default function Gallery() {
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const tags = refElInput.current.value;
+		refElInput.current.value = '';
+		if (!tags.trim()) return;
+		setIsUser('');
+		fetchFlickr({ type: 'search', keyword: tags });
+		activateBtn(e);
+	};
+
 	useEffect(() => {
-		//fetchFlickr({ type: 'user', id: myID });
-		fetchFlickr({ type: 'search', keyword: 'Canada' });
+		fetchFlickr({ type: 'user', id: myID });
+		//fetchFlickr({ type: 'search', keyword: 'landscape' });
 	}, []);
 
 	return (
@@ -79,10 +90,11 @@ export default function Gallery() {
 					</button>
 				</nav>
 
-				<form>
-					<input type='text' placeholder='Search' />
-					<LuSearch className='btnSearch' fontSize={20} color={'#bbb'} />
-					<button></button>
+				<form onSubmit={handleSubmit}>
+					<input type='text' placeholder='Search' ref={refElInput} />
+					<button className='btnSearch'>
+						<LuSearch fontSize={20} color={'#bbb'} />
+					</button>
 				</form>
 			</article>
 
