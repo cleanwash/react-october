@@ -81,4 +81,8 @@ RESTful API : DB의 데이터를 구조적으로 변경하기 위한 개발방�
 - 문자값만 저장 가능(5 MB)
 - 객체값을 문자화시켜서 저장
 - 로컬 저장소 값을 불러올 때는, 반대로 문자형태를 JSON 형태로 객체로 parsing해서 가져옴
+
+localStorage 메서드 
+localStorage.setItem('키','문자화 된 데이터') :로컬 저장소에 데이터 저장
+localStorage.getitem('키',) : 해당 데이터는 문자값으로 리턴되기 때문에 다시 객체 형태로 parsing 처리 필요 
 */
