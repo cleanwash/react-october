@@ -5,9 +5,15 @@ import { ImCancelCircle } from 'react-icons/im';
 import { useRef, useState, useEffect } from 'react';
 
 function Comunity() {
+	// 순서1 - 로컬 저장소의 값을 가져와서 객체화한다음 리턴하는 함수
+	const getLocalData = () => {
+		const data = localStorage.getItem('posts');
+		return JSON.parse(data);
+	};
 	const refInput = useRef(null);
 	const refTextarea = useRef(null);
-	const [Posts, setPosts] = useState([]);
+	//순서 2- 컴포넌트가 마운트되자마자 로컬저장소에서 가져온 배열값을 Posts state에 옮겨담음
+	const [Posts, setPosts] = useState(getLocalData());
 	const resetPost = () => {
 		refInput.current.value = '';
 		refTextarea.current.value = '';
@@ -30,6 +36,7 @@ function Comunity() {
 	};
 
 	useEffect(() => {
+		//순서 5 - Posts 값이 변경될때마다 해당값을 문자화해서 로컬저장소에 저장
 		localStorage.setItem('posts', JSON.stringify(Posts));
 	}, [Posts]);
 
@@ -44,6 +51,7 @@ function Comunity() {
 						<button onClick={resetPost}>
 							<ImCancelCircle fontSize={20} color={'#555'} />
 						</button>
+						{/* 순서4 - 글작성시 State값 변경처리 */}
 						<button onClick={createPost}>
 							<TfiWrite fontSize={20} color={'#555'} />
 						</button>
@@ -51,6 +59,7 @@ function Comunity() {
 				</div>
 
 				<div className='showBox'>
+					{/* 순서3 - 로컬저장소로부터 옮겨담아진 state값을 반복돌면서 글 목록 출력  */}
 					{Posts.map((post, idx) => (
 						<article key={idx}>
 							<div className='txt'>
