@@ -2,7 +2,7 @@ import './Community.scss';
 import Layout from '../../common/layout/Layout';
 import { TfiWrite } from 'react-icons/tfi';
 import { ImCancelCircle } from 'react-icons/im';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 function Comunity() {
 	const refInput = useRef(null);
@@ -28,6 +28,10 @@ function Comunity() {
 		]);
 		resetPost();
 	};
+
+	useEffect(() => {
+		localStorage.setItem('posts', JSON.stringify(Posts));
+	}, [Posts]);
 
 	return (
 		<Layout title={'Community'}>
