@@ -2,11 +2,32 @@ import './Community.scss';
 import Layout from '../../common/layout/Layout';
 import { TfiWrite } from 'react-icons/tfi';
 import { ImCancelCircle } from 'react-icons/im';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 function Comunity() {
 	const refInput = useRef(null);
 	const refTextarea = useRef(null);
+	const [Posts, setPosts] = useState([]);
+	const resetPost = () => {
+		refInput.current.value = '';
+		refTextarea.current.value = '';
+	};
+
+	const createPost = () => {
+		//기존의 Posts 배열값을 Deep Copy 한 다음, 새로운 객체값을 추가 (불변성 유지)
+		if (!refInput.current.value.trim() || !refTextarea.current.value.trim()) {
+			resetPost();
+			return alert('제목값 본문을 모두 입력하세요 ');
+		}
+		setPosts([
+			{
+				title: refInput.current.value,
+				content: refTextarea.current.value,
+			},
+			...Posts,
+		]);
+		resetPost();
+	};
 
 	return (
 		<Layout title={'Community'}>
@@ -16,16 +37,23 @@ function Comunity() {
 					<textarea cols='30' rows='3' placeholder='leave message' ref={refTextarea}></textarea>
 
 					<nav>
-						<button>
+						<button onClick={resetPost}>
 							<ImCancelCircle fontSize={20} color={'#555'} />
 						</button>
-						<button>
+						<button onClick={createPost}>
 							<TfiWrite fontSize={20} color={'#555'} />
 						</button>
 					</nav>
 				</div>
 
-				<div className='showBox'></div>
+				<div className='showBox'>
+					{Posts.map((post, idx) => (
+						<article key={idx}>
+							<h2>{post.title}</h2>
+							<p>{post.content}</p>
+						</article>
+					))}
+				</div>
 			</div>
 		</Layout>
 	);
