@@ -23,10 +23,16 @@ function Comunity() {
 			resetPost();
 			return alert('제목값 본문을 모두 입력하세요 ');
 		}
+		//현재 전세계 표준 시간값에서 getTIme()을 호출하면, 현재 시간값을 초단위로 밀리세컨드 단위에 숫자값으로 반환
+		//표준시값에 한국시간대가 9시간 빠르므로, 9시간에 대한 밀리세컨드 값을 더해줌 (korTime)
+		//korTime: 한국시간대를 밀리세컨드로 반환한 값
+		const korTime = new Date().getTime() + 1000 * 60 * 60 * 9;
+		//new Date(한국밀리세컨드시간값) --> 한국 시간값을 기준으로 해서 시간 객체값 반환
 		setPosts([
 			{
 				title: refInput.current.value,
 				content: refTextarea.current.value,
+				date: new Date(korTime),
 			},
 			...Posts,
 		]);
@@ -39,7 +45,7 @@ function Comunity() {
 		//삭제 순번글만 제외한 나머지 배열값을 다시 setPosts로 기존 Posts 값을 변경하면 컴포넌트가 재런더링 되면서 해당글만 제외한 나머지 글만 출력
 		//해당 구문에서는 filter 자체가 불변성을 유지하면서 새로운 배열을 리턴하기 때문에, 굳이 전개 연산자로 기존 state값을 deep copy할 필요가 없음
 
-		setPosts(Posts.filter((post, idx) => delIndex !== idx));
+		setPosts(Posts.filter((_, idx) => delIndex !== idx));
 	};
 
 	useEffect(() => {
