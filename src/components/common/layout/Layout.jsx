@@ -18,6 +18,7 @@ export default function Layout({ children, title }) {
 		<section ref={refFrame} className={`layout ${newClass}`}>
 			<h1 ref={refTitle}>{title}</h1>
 			<div className='bar'></div>
+
 			{children}
 		</section>
 	);
