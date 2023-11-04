@@ -77,6 +77,7 @@ function Comunity() {
 								<h2>{post.title}</h2>
 								<p>{post.content}</p>
 							</div>
+							<span>{post.date.split('T')[0].split('-').join('.')} </span>
 							<nav>
 								<button>Edit</button>
 								<button onClick={() => deletePost(idx)}>Delete</button>
