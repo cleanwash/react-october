@@ -71,19 +71,28 @@ function Comunity() {
 
 				<div className='showBox'>
 					{/* 순서3 - 로컬저장소로부터 옮겨담아진 state값을 반복돌면서 글 목록 출력  */}
-					{Posts.map((post, idx) => (
-						<article key={idx}>
-							<div className='txt'>
-								<h2>{post.title}</h2>
-								<p>{post.content}</p>
-							</div>
-							<span>{post.date.split('T')[0].split('-').join('.')} </span>
-							<nav>
-								<button>Edit</button>
-								<button onClick={() => deletePost(idx)}>Delete</button>
-							</nav>
-						</article>
-					))}
+					{Posts.map((post, idx) => {
+						//현재 시간값이 State에 옮겨담아지는 순간에는 객체값이고,
+						//다음번 렌더링 싸이클에서 useEffect에 의해, 문자로 변환된 다음에 로컬 저장소에 저장
+						//날짜값을 받는 첫번째 렌더링 타임에는 날짜값이 객체이므로, split 부분에서 오류 발생
+						//해결방법은 처음 렌더링을 도는 시점에서 날짜를 강제로 문자화한다음 출력처리
+						//console.log(typeof post.date);
+						const stringDate = JSON.stringify(post.date);
+						const textedDate = stringDate.split('T')[0].split('"')[1].split('_').join('.');
+						return (
+							<article key={idx}>
+								<div className='txt'>
+									<h2>{post.title}</h2>
+									<p>{post.content}</p>
+								</div>
+								<span>{textedDate} </span>
+								<nav>
+									<button>Edit</button>
+									<button onClick={() => deletePost(idx)}>Delete</button>
+								</nav>
+							</article>
+						);
+					})}
 				</div>
 			</div>
 		</Layout>
