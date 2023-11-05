@@ -46,9 +46,8 @@ button {
 fieldset {
 	border: none;
 }
-
 input,
-text {
+textarea {
 	&::placeholder {
 		font-size: 0.9rem;
 		color: var(--pointColor);
@@ -57,7 +56,6 @@ text {
 select {
 	color: var(--pointColor);
 }
-
 html {
 	&::-webkit-scrollbar {
 		width: 6px;
