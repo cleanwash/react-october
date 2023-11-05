@@ -4,6 +4,7 @@ import './Members.scss';
 import { useState, useRef, useEffect } from 'react';
 
 export default function Members() {
+	console.log('re-render');
 	const initVal = useRef({
 		userid: '',
 		email: '',
@@ -16,18 +17,22 @@ export default function Members() {
 	});
 	const [Val, setVal] = useState(initVal.current);
 
-	//onChange 이벤트가 발생할 때마다, 해당 함수 호출
+	//value vs defultValue
+	//만약 실시간으로 바뀌는 값을 무조건 value props로 연결하고 onChange이벤트 연결
+	//바뀌지 않는 정적인 값을 연결시에는 defaultValue props로 연결하고 onChange 이벤트 연결 불필요
+
 	const handleChange = (e) => {
-		console.log(e.target.value);
-		//현재 입력하고 있는 가상돔 요소의 name,value 값을 비구조화 할당으로 뽑아냄
 		const { name, value } = e.target;
-		//객체 안에서 property key 값을 [] 감싸면 변수로 치환가능
-		//name='userid'인 input 요소의 onChange 이벤트가 발생하면
-		//[name] => 'userid', value: 내가 현재 입력하고 있는 값 등록
-		//handleChange 함수가 연결된 폼에 특정 값을 입력할 때마다, 실시간으로 해당 name값에 매칭되는 객체 property가 변경되고,
-		//변경된 값으로 state 수정
-		//State가 변경될 떄마다, 컴포넌트 재호출되면서 Input 요소의 value 속성으로 현재 State값이 실시간으로 출력됨
 		setVal({ ...Val, [name]: value });
+	};
+
+	const handleCheck = (e) => {
+		const { name } = e.target;
+		let checkArr = [];
+		const inputs = e.target.parentElement.querySelectorAll('input');
+
+		inputs.forEach((input) => input.checked && checkArr.push(input.value));
+		setVal({ ...Val, [name]: checkArr });
 	};
 
 	useEffect(() => {
@@ -46,6 +51,7 @@ export default function Members() {
 							<legend className='h'>회원가입 폼</legend>
 							<table>
 								<tbody>
+									{/* userid, email (handleChange) */}
 									<tr>
 										<td>
 											<input type='text' name='userid' placeholder='User ID' value={Val.userid} onChange={handleChange} />
@@ -54,18 +60,21 @@ export default function Members() {
 											<input type='text' name='email' placeholder='Email' value={Val.email} onChange={handleChange} />
 										</td>
 									</tr>
+
+									{/* pwd1, pwd2 (handleChange) */}
 									<tr>
 										<td>
-											<input type='password' name='pwd1' placeholder='Password' value={Val.pwd} onChange={handleChange} />
+											<input type='password' name='pwd1' placeholder='Password' value={Val.pwd1} onChange={handleChange} />
 										</td>
 										<td>
 											<input type='password' name='pwd2' placeholder='Re-Password' value={Val.pwd2} onChange={handleChange} />
 										</td>
 									</tr>
 
+									{/* edu (handleChange) */}
 									<tr>
 										<td colSpan='2'>
-											<select name='edu'>
+											<select name='edu' onChange={handleChange}>
 												<option defaultValue=''>Education</option>
 												<option defaultValue='elementary-school'>초등학교 졸업</option>
 												<option defaultValue='middle-school'>중학교 졸업</option>
@@ -74,30 +83,36 @@ export default function Members() {
 											</select>
 										</td>
 									</tr>
+
+									{/* gender (handleChange) */}
 									<tr>
 										<td colSpan='2'>
-											<input type='radio' defaultValue='female' id='female' name='gender' />
+											<input type='radio' defaultValue='female' id='female' name='gender' onChange={handleChange} />
 											<label htmlFor='female'>Female</label>
 
-											<input type='radio' defaultValue='male' id='male' name='gender' />
+											<input type='radio' defaultValue='male' id='male' name='gender' onChange={handleChange} />
 											<label htmlFor='male'>Male</label>
 										</td>
 									</tr>
+
+									{/* interests (handleCheck) */}
 									<tr>
 										<td colSpan='2'>
-											<input type='checkbox' name='interest' id='sports' defaultValue='sports' />
+											<input type='checkbox' name='interest' id='sports' defaultValue='sports' onChange={handleCheck} />
 											<label htmlFor='sports'>Sports</label>
 
-											<input type='checkbox' name='interest' id='reading' defaultValue='reading' />
+											<input type='checkbox' name='interest' id='reading' defaultValue='reading' onChange={handleCheck} />
 											<label htmlFor='reading'>Reading</label>
 
-											<input type='checkbox' name='interest' id='music' defaultValue='music' />
+											<input type='checkbox' name='interest' id='music' defaultValue='music' onChange={handleCheck} />
 											<label htmlFor='music'>Music</label>
 
-											<input type='checkbox' name='interest' id='game' defaultValue='game' />
+											<input type='checkbox' name='interest' id='game' defaultValue='game' onChange={handleCheck} />
 											<label htmlFor='game'>Game</label>
 										</td>
 									</tr>
+
+									{/* comments (handleChange) */}
 									<tr>
 										<td colSpan='2'>
 											<textarea name='comments' cols='30' rows='5' placeholder='Leave a comment' value={Val.comments} onChange={handleChange}></textarea>
