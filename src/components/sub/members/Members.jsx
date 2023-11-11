@@ -37,6 +37,18 @@ export default function Members() {
 		if (value.userid.length < 5) {
 			errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
 		}
+		if (value.comments.length < 10) {
+			errs.comments = '남기는 말은 최소 10글자 이상 입력하세요.';
+		}
+		if (!value.gender) {
+			errs.gender = '성별을 선택해주세요.';
+		}
+		if (!value.edu) {
+			errs.edu = '최종학력을 선택해주세요.';
+		}
+		if (value.interest.length === 0) {
+			errs.interests = '취미를 하나이상 선택하세요.';
+		}
 		return errs;
 	};
 
@@ -67,7 +79,7 @@ export default function Members() {
 									<tr>
 										<td>
 											<input type='text' name='userid' placeholder='User ID' value={Val.userid} onChange={handleChange} />
-											<p>{Errs?.userid}</p>
+											{Errs.userid && <p>{Errs.userid}</p>}
 										</td>
 										<td>
 											<input type='text' name='email' placeholder='Email' value={Val.email} onChange={handleChange} />
@@ -88,12 +100,14 @@ export default function Members() {
 									<tr>
 										<td colSpan='2'>
 											<select name='edu' onChange={handleChange}>
-												<option defaultValue=''>Education</option>
-												<option defaultValue='elementary-school'>초등학교 졸업</option>
-												<option defaultValue='middle-school'>중학교 졸업</option>
-												<option defaultValue='high-school'>고등학교 졸업</option>
-												<option defaultValue='college'>대학교 졸업</option>
+												{/* 어차피 onChange이벤트가 연결되어 있으므로 value값으로 등록 */}
+												<option value=''>Education</option>
+												<option value='elementary-school'>초등학교 졸업</option>
+												<option value='middle-school'>중학교 졸업</option>
+												<option value='high-school'>고등학교 졸업</option>
+												<option value='college'>대학교 졸업</option>
 											</select>
+											{Errs.edu && <p>{Errs.edu}</p>}
 										</td>
 									</tr>
 
@@ -105,6 +119,7 @@ export default function Members() {
 
 											<input type='radio' defaultValue='male' id='male' name='gender' onChange={handleChange} />
 											<label htmlFor='male'>Male</label>
+											{Errs.gender && <p>{Errs.gender}</p>}
 										</td>
 									</tr>
 
@@ -122,6 +137,7 @@ export default function Members() {
 
 											<input type='checkbox' name='interest' id='game' defaultValue='game' onChange={handleCheck} />
 											<label htmlFor='game'>Game</label>
+											{Errs.interests && <p>{Errs.interests}</p>}
 										</td>
 									</tr>
 
@@ -129,12 +145,13 @@ export default function Members() {
 									<tr>
 										<td colSpan='2'>
 											<textarea name='comments' cols='30' rows='5' placeholder='Leave a comment' value={Val.comments} onChange={handleChange}></textarea>
+											{Errs.comments && <p>{Errs.comments}</p>}
 										</td>
 									</tr>
 									<tr>
 										<td colSpan='2'>
-											<button>cancel</button>
-											<button>submit</button>
+											<button>Cancel</button>
+											<button>Submit</button>
 										</td>
 									</tr>
 								</tbody>
