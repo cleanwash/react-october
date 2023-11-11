@@ -12,8 +12,15 @@ export default function Contact() {
 		center: new kakao.maps.LatLng(37.592422981858604, 127.04710339920344),
 		level: 3,
 	};
+
+	//마커 이미지 인스턴스를 생성하기 위한 정보값들
+	const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 마커이미지의 주소입니다
+	const imageSize = new kakao.maps.Size(64, 69); // 마커이미지의 크기입니다
+	const imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 	var marker = new kakao.maps.Marker({
 		position: mapOption.center,
+		image: markerImage,
 	});
 
 	useEffect(() => {
