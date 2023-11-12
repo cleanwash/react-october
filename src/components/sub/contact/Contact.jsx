@@ -52,6 +52,7 @@ export default function Contact() {
 		mapInstance.current.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 		//마커 인스턴에 맵 인스턴스 결해서 마커 출력
 		marker.setMap(mapInstance.current);
+		mapInstance.current.setZoomable(false);
 
 		setTraffic(false);
 
