@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import Layout from '../../common/layout/Layout';
+import emailjs from '@emailjs/browser';
 import './Contact.scss';
 
 export default function Contact() {
@@ -7,6 +8,7 @@ export default function Contact() {
 	const mapFrame = useRef(null);
 	const viewFrame = useRef(null);
 	const mapInstance = useRef(null);
+	const form = useRef(null);
 	const [Index, setIndex] = useState(0);
 	const [Traffic, setTraffic] = useState(false);
 	const [View, setView] = useState(false);
@@ -38,12 +40,29 @@ export default function Contact() {
 
 	const marker = new kakao.maps.Marker({
 		position: info.current[Index].latlng,
-		image: new kakao.maps.MarkerImage(info.current[Index].imgSrc, info.current[Index].imgSize, info.current[Index].imgPos),
+		image: new kakao.maps.MarkerImage(
+			info.current[Index].imgSrc,
+			info.current[Index].imgSize,
+			info.current[Index].imgPos
+		),
 	});
+
+	const sendEmail = (e) => {
+		e.preventDefault();
+
+		emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY').then(
+			(result) => {
+				console.log(result.text);
+			},
+			(error) => {
+				console.log(error.text);
+			}
+		);
+	};
 
 	const roadView = () => {
 		//roadview setting
-		//두번 째 인수값 50(m단위)은 마커위치로부터 로드뷰가 출력될 수 있는, 가장 가까운 거리 범위 지정
+		//두번째 인수값 50(m단위)은 마커위치로부터 로드뷰가 출력될수 있는 가장 가까운 거리의 범위지정
 		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (id) => {
 			new kakao.maps.Roadview(viewFrame.current).setPanoId(id, info.current[Index].latlng);
 		});
@@ -71,7 +90,9 @@ export default function Contact() {
 
 	//교통정보 보기 토글 기능
 	useEffect(() => {
-		Traffic ? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC) : mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+		Traffic
+			? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
+			: mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 	}, [Traffic]);
 
 	useEffect(() => {
@@ -80,22 +101,36 @@ export default function Contact() {
 
 	return (
 		<Layout title={'Contact us'}>
-			<div className='container'>
-				<article id='map' ref={mapFrame} className={View ? '' : 'on'}></article>
-				<article id='view' ref={viewFrame} className={View ? 'on' : ''}></article>
+			<div className='mailBox'>
+				<form ref={form} onSubmit={sendEmail}>
+					<label>Name</label>
+					<input type='text' name='user_name' />
+					<label>Email</label>
+					<input type='email' name='user_email' />
+					<label>Message</label>
+					<textarea name='message' />
+					<input type='submit' value='Send' />
+				</form>
 			</div>
 
-			<ul className='branch'>
-				{info.current.map((el, idx) => (
-					<li key={idx} className={idx === Index ? 'on' : ''} onClick={() => setIndex(idx)}>
-						{el.title}
-					</li>
-				))}
-			</ul>
+			<div className='mapBox'>
+				<div className='container'>
+					<article id='map' ref={mapFrame} className={View ? '' : 'on'}></article>
+					<article id='view' ref={viewFrame} className={View ? 'on' : ''}></article>
+				</div>
 
-			<button onClick={setCenter}>위치 초기화</button>
-			{!View && <button onClick={() => setTraffic(!Traffic)}>{Traffic ? '교통정보 끄기' : '교통정보 보기'}</button>}
-			<button onClick={() => setView(!View)}>{View ? '지도보기' : '로드뷰보기'}</button>
+				<ul className='branch'>
+					{info.current.map((el, idx) => (
+						<li key={idx} className={idx === Index ? 'on' : ''} onClick={() => setIndex(idx)}>
+							{el.title}
+						</li>
+					))}
+				</ul>
+
+				<button onClick={setCenter}>위치 초기화</button>
+				{!View && <button onClick={() => setTraffic(!Traffic)}>{Traffic ? '교통정보 끄기' : '교통정보 보기'}</button>}
+				<button onClick={() => setView(!View)}>{View ? '지도보기' : '로드뷰보기'}</button>
+			</div>
 		</Layout>
 	);
 }
