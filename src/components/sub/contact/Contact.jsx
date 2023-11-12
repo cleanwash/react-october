@@ -40,17 +40,13 @@ export default function Contact() {
 
 	const marker = new kakao.maps.Marker({
 		position: info.current[Index].latlng,
-		image: new kakao.maps.MarkerImage(
-			info.current[Index].imgSrc,
-			info.current[Index].imgSize,
-			info.current[Index].imgPos
-		),
+		image: new kakao.maps.MarkerImage(info.current[Index].imgSrc, info.current[Index].imgSize, info.current[Index].imgPos),
 	});
 
 	const sendEmail = (e) => {
 		e.preventDefault();
 
-		emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY').then(
+		emailjs.sendForm('service_blebqd2', 'template_93zpfge', form.current, '23g8RepczesqKPoIX').then(
 			(result) => {
 				console.log(result.text);
 			},
@@ -90,9 +86,7 @@ export default function Contact() {
 
 	//교통정보 보기 토글 기능
 	useEffect(() => {
-		Traffic
-			? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
-			: mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+		Traffic ? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC) : mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 	}, [Traffic]);
 
 	useEffect(() => {
@@ -104,10 +98,13 @@ export default function Contact() {
 			<div className='mailBox'>
 				<form ref={form} onSubmit={sendEmail}>
 					<label>Name</label>
-					<input type='text' name='user_name' />
+					{/* from_name :템플릿에서 전송하는 사람이름 변수명 */}
+					<input type='text' name='from_name' />
 					<label>Email</label>
-					<input type='email' name='user_email' />
+					{/* reply_to :템플릿에서 답장할 메일주소 변수명 */}
+					<input type='email' name='reply_to' />
 					<label>Message</label>
+					{/* message :템플릿에서 문의메세지 변수명 */}
 					<textarea name='message' />
 					<input type='submit' value='Send' />
 				</form>
